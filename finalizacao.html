@@ -146,23 +146,12 @@ function finalizarPagamento() {
     // CALCULAR TOTAL
     // =====================================
 
-    let total = Number(pedido.total) || 0;
-
-if (total === 0 && Array.isArray(pedido.produtos)) {
-
-    total = 0;
-
-    pedido.produtos.forEach(produto => {
-
+    const total = carrinho.reduce((soma, produto) => {
         const preco = Number(produto.preco) || 0;
         const quantidade = Number(produto.quantidade) || 0;
 
-        total += preco * quantidade;
-
-    });
-}
-
-    };
+        return soma + preco * quantidade;
+    }, 0);
 
 
     // =====================================
