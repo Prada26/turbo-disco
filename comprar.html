@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Comprar - Shalom Embalagens</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #eaf3ff;
+            color: #172033;
+        }
+
+        /* CABEÇALHO */
+
+        header {
+            background: #0d6efd;
+            color: white;
+            padding: 18px 6%;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #dbeafe;
+        }
+
+        .voltar {
+            background: white;
+            color: #0d6efd;
+
+            text-decoration: none;
+
+            padding: 10px 18px;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+        }
+
+        .voltar:hover {
+            background: #dbeafe;
+        }
+
+
+        /* TÍTULO */
+
+        .titulo {
+            text-align: center;
+            padding: 45px 20px 20px;
+        }
+
+        .titulo h1 {
+            color: #084298;
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        .titulo p {
+            color: #4b5563;
+            font-size: 18px;
+        }
+
+
+        /* PRODUTOS */
+
+        .produtos {
+            max-width: 1200px;
+
+            margin: 30px auto;
+
+            padding: 0 20px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(250px, 1fr));
+
+            gap: 25px;
+        }
+
+
+        .produto {
+            background: white;
+
+            padding: 20px;
+
+            border-radius: 15px;
+
+            border: 2px solid #cfe2ff;
+
+            box-shadow:
+                0 5px 20px rgba(13, 110, 253, 0.15);
+
+            text-align: center;
+
+            transition: 0.2s;
+        }
+
+
+        .produto:hover {
+            transform: translateY(-5px);
+
+            box-shadow:
+                0 8px 25px rgba(13, 110, 253, 0.25);
+        }
+
+
+        .produto img {
+            width: 100%;
+
+            height: 190px;
+
+            object-fit: contain;
+
+            border-radius: 10px;
+        }
+
+
+        .produto .emoji {
+            height: 190px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 90px;
+        }
+
+
+        .produto h2 {
+            color: #084298;
+            font-size: 22px;
+        }
+
+
+        .produto p {
+            color: #555;
+            min-height: 45px;
+        }
+
+
+        .preco {
+            display: block;
+
+            color: #0d6efd;
+
+            font-size: 22px;
+
+            font-weight: bold;
+
+            margin: 15px 0;
+        }
+
+
+        /* QUANTIDADE */
+
+        .quantidade {
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-weight: bold;
+
+            color: #084298;
+        }
+
+
+        .quantidade-input {
+            width: 100%;
+
+            padding: 12px;
+
+            border: 2px solid #b6d4fe;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            text-align: center;
+
+            margin-bottom: 12px;
+        }
+
+
+        .quantidade-input:focus {
+            outline: none;
+
+            border-color: #0d6efd;
+        }
+
+
+        /* RESUMO */
+
+        .resumo {
+            max-width: 750px;
+
+            margin: 40px auto;
+
+            padding: 30px;
+
+            background: white;
+
+            border-radius: 15px;
+
+            border: 2px solid #cfe2ff;
+
+            box-shadow:
+                0 5px 20px rgba(13, 110, 253, 0.15);
+        }
+
+
+        .resumo h2 {
+            color: #084298;
+
+            margin-top: 0;
+
+            text-align: center;
+        }
+
+
+        #listaResumo {
+            margin: 20px 0;
+        }
+
+
+        .item-resumo {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 14px 5px;
+
+            border-bottom: 1px solid #dbeafe;
+
+            font-size: 16px;
+
+            gap: 15px;
+        }
+
+
+        .nenhum {
+            text-align: center;
+
+            color: #777;
+
+            padding: 15px;
+        }
+
+
+        .total {
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-top: 20px;
+
+            padding-top: 20px;
+
+            border-top: 3px solid #0d6efd;
+
+            font-size: 24px;
+
+            color: #084298;
+        }
+
+
+        /* BOTÃO */
+
+        .botao {
+            width: 100%;
+
+            padding: 16px;
+
+            margin-top: 20px;
+
+            background: #0d6efd;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 8px;
+
+            font-size: 18px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+
+        .botao:hover {
+            background: #084298;
+        }
+
+
+        /* RODAPÉ */
+
+        footer {
+            margin-top: 50px;
+
+            padding: 25px;
+
+            background: #062d63;
+
+            color: white;
+
+            text-align: center;
+        }
+
+
+        /* CELULAR */
+
+        @media (max-width: 600px) {
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .titulo h1 {
+                font-size: 30px;
+            }
+
+            .produtos {
+                grid-template-columns: 1fr;
+            }
+
+            .item-resumo {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- CABEÇALHO -->
+
+    <header>
+
+        <div class="logo">
+
+            📦 Shalom
+            <span>Embalagens</span>
+
+        </div>
+
+
+        <a
+            href="index.html"
+            class="voltar">
+
+            🏠 Voltar para loja
+
+        </a>
+
+    </header>
+
+
+    <!-- TÍTULO -->
+
+    <section class="titulo">
+
+        <h1>
+            🛒 Escolha seus produtos
+        </h1>
+
+        <p>
+            Selecione os produtos e informe a quantidade.
+        </p>
+
+    </section>
+
+
+    <!-- PRODUTOS -->
+
+    <section class="produtos">
+
+
+        <!-- CAIXA -->
+
+        <div class="produto">
+
+            <img
+                src="caixa de papelao.webp"
+                alt="Caixa de Papelão">
+
+            <h2>
+                Caixa de Papelão
+            </h2>
+
+            <p>
+                Caixa resistente para diversos produtos.
+            </p>
+
+            <span class="preco">
+                R$ 8,90
+            </span>
+
+            <label
+                class="quantidade"
+                for="qtd-caixa">
+
+                Quantidade:
+
+            </label>
+
+            <input
+                class="quantidade-input"
+                type="number"
+                id="qtd-caixa"
+                min="0"
+                value="0"
+                oninput="atualizarResumo()">
+
+        </div>
+
+
+        <!-- SACOLA -->
+
+        <div class="produto">
+
+            <img
+                src="kraft png..webp"
+                alt="Sacola Kraft">
+
+            <h2>
+                Sacola Kraft
+            </h2>
+
+            <p>
+                Sacola kraft para lojas e presentes.
+            </p>
+
+            <span class="preco">
+                R$ 3,50
+            </span>
+
+            <label
+                class="quantidade"
+                for="qtd-sacola">
+
+                Quantidade:
+
+            </label>
+
+            <input
+                class="quantidade-input"
+                type="number"
+                id="qtd-sacola"
+                min="0"
+                value="0"
+                oninput="atualizarResumo()">
+
+        </div>
+
+
+        <!-- DELIVERY -->
+
+        <div class="produto">
+
+            <div class="emoji">
+                🥡
+            </div>
+
+            <h2>
+                Embalagem Delivery
+            </h2>
+
+            <p>
+                Ideal para restaurantes e lanchonetes.
+            </p>
+
+            <span class="preco">
+                R$ 10,00
+            </span>
+
+            <label
+                class="quantidade"
+                for="qtd-delivery">
+
+                Quantidade:
+
+            </label>
+
+            <input
+                class="quantidade-input"
+                type="number"
+                id="qtd-delivery"
+                min="0"
+                value="0"
+                oninput="atualizarResumo()">
+
+        </div>
+
+
+        <!-- COPO -->
+
+        <div class="produto">
+
+            <img
+                src="copos png..webp"
+                alt="Copo Descartável">
+
+            <h2>
+                Copo Descartável
+            </h2>
+
+            <p>
+                Copos para festas, eventos e comércio.
+            </p>
+
+            <span class="preco">
+                R$ 10,90
+            </span>
+
+            <label
+                class="quantidade"
+                for="qtd-copo">
+
+                Quantidade:
+
+            </label>
+
+            <input
+                class="quantidade-input"
+                type="number"
+                id="qtd-copo"
+                min="0"
+                value="0"
+                oninput="atualizarResumo()">
+
+        </div>
+
+    </section>
+
+
+    <!-- RESUMO -->
+
+    <section class="resumo">
+
+        <h2>
+            🛒 Resumo da compra
+        </h2>
+
+        <div id="listaResumo">
+
+            <div class="nenhum">
+                Nenhum produto selecionado.
+            </div>
+
+        </div>
+
+
+        <div class="total">
+
+            <span>
+                Total:
+            </span>
+
+            <strong>
+                R$
+                <span id="total">
+                    0,00
+                </span>
+            </strong>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="botao"
+            onclick="continuarCompra()">
+
+            Continuar para pagamento →
+
+        </button>
+
+    </section>
+
+
+    <!-- RODAPÉ -->
+
+    <footer>
+
+        © 2026 Shalom Embalagens -
+        Todos os direitos reservados.
+
+    </footer>
+
+
+    <script>
+
+       
+
+
+        // =====================================
+        // ATUALIZAR RESUMO
+        // =====================================
+
+        function atualizarResumo() {
+
+            const lista =
+                document.getElementById("listaResumo");
+
+            const totalElemento =
+                document.getElementById("total");
+
+            let total = 0;
+
+            let quantidadeProdutos = 0;
+
+            lista.innerHTML = "";
+
+
+            produtos.forEach(produto => {
+
+                const campo =
+                    document.getElementById(produto.id);
+
+                if (!campo) {
+                    return;
+                }
+
+
+                let quantidade =
+                    Number(campo.value);
+
+
+                if (isNaN(quantidade) || quantidade < 0) {
+                    quantidade = 0;
+                    campo.value = 0;
+                }
+
+
+                if (quantidade > 0) {
+
+                    const subtotal =
+                        produto.preco * quantidade;
+
+                    total += subtotal;
+
+                    quantidadeProdutos++;
+
+
+                    lista.innerHTML += `
+
+                        <div class="item-resumo">
+
+                            <span>
+                                ${produto.nome}
+                                × ${quantidade}
+                            </span>
+
+                            <strong>
+                                R$
+                                ${subtotal
+                                    .toFixed(2)
+                                    .replace(".", ",")}
+                            </strong>
+
+                        </div>
+
+                    `;
+                }
+
+            });
+
+
+            if (quantidadeProdutos === 0) {
+
+                lista.innerHTML = `
+
+                    <div class="nenhum">
+                        Nenhum produto selecionado.
+                    </div>
+
+                `;
+            }
+
+
+            totalElemento.textContent =
+                total
+                    .toFixed(2)
+                    .replace(".", ",");
+        }
+
+
+        // =====================================
+        // CONTINUAR COMPRA
+        // =====================================
+
+        function continuarCompra() {
+
+            const carrinho = [];
+
+
+            produtos.forEach(produto => {
+
+                const campo =
+                    document.getElementById(produto.id);
+
+                if (!campo) {
+                    return;
+                }
+
+
+                const quantidade =
+                    Number(campo.value) || 0;
+
+
+                if (quantidade > 0) {
+
+                    carrinho.push({
+
+                        nome: produto.nome,
+
+                        preco: produto.preco,
+
+                        quantidade: quantidade
+
+                    });
+
+                }
+
+            });
+
+
+            // =================================
+            // VERIFICAR CARRINHO
+            // =================================
+
+            if (carrinho.length === 0) {
+
+                alert(
+                    "🛒 Selecione pelo menos um produto."
+                );
+
+                return;
+            }
+
+
+            // =================================
+            // SALVAR NO NAVEGADOR
+            // =================================
+
+            localStorage.setItem(
+                "carrinhoCompra",
+                JSON.stringify(carrinho)
+            );
+
+
+            // =================================
+            // IR PARA CHECKOUT
+            // =================================
+
+            window.location.href =
+                "checkout.html";
+        }
+
+
+        // =====================================
+        // INICIAR
+        // =====================================
+
+        atualizarResumo();
+
+    </script>
+
+</body>
+
+</html>
