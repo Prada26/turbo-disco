@@ -1,200 +1,50 @@
-function finalizarPagamento() {
-
-    // =====================================
-    // PEGAR DADOS DO CLIENTE
-    // =====================================
-
-    const nomeElemento =
-        document.getElementById("nome");
-
-    const telefoneElemento =
-        document.getElementById("telefone");
-
-    const enderecoElemento =
-        document.getElementById("endereco");
-
-    const numeroElemento =
-        document.getElementById("numero");
-
-    const cidadeElemento =
-        document.getElementById("cidade");
-
-
-    // Verificar se os campos existem
-    if (
-        !nomeElemento ||
-        !telefoneElemento ||
-        !enderecoElemento ||
-        !numeroElemento ||
-        !cidadeElemento
-    ) {
-        alert(
-            "❌ Erro: não foi possível encontrar os campos do cliente."
-        );
-
-        return;
-    }
-
-
-    // Pegar valores
-    const nome =
-        nomeElemento.value.trim();
-
-    const telefone =
-        telefoneElemento.value.trim();
-
-    const endereco =
-        enderecoElemento.value.trim();
-
-    const numero =
-        numeroElemento.value.trim();
-
-    const cidade =
-        cidadeElemento.value.trim();
-
-
-    // =====================================
-    // VERIFICAR DADOS
-    // =====================================
-
-    if (
-        !nome ||
-        !telefone ||
-        !endereco ||
-        !numero ||
-        !cidade
-    ) {
-        alert(
-            "⚠️ Preencha todos os dados do cliente."
-        );
-
-        return;
-    }
-
-
-    // =====================================
-    // PEGAR FORMA DE PAGAMENTO
-    // =====================================
-
-    const pagamento =
-        document.querySelector(
-            'input[name="pagamento"]:checked'
-        );
-
-
-    if (!pagamento) {
-        alert(
-            "💳 Escolha uma forma de pagamento."
-        );
-
-        return;
-    }
-
-
-    // =====================================
-    // RECUPERAR CARRINHO
-    // =====================================
-
-    const dadosCarrinho =
-        localStorage.getItem(
-            "carrinhoCompra"
-        );
-
-
-    let carrinho = [];
-
-
-    try {
-
-        carrinho = dadosCarrinho
-            ? JSON.parse(dadosCarrinho)
-            : [];
-
-    } catch (erro) {
-
-        console.error(
-            "Erro ao ler o carrinho:",
-            erro
-        );
-
-        alert(
-            "❌ O carrinho possui dados inválidos. Volte para a página de compra e tente novamente."
-        );
-
-        return;
-    }
-
-
-    // =====================================
-    // VERIFICAR CARRINHO
-    // =====================================
-
-    if (
-        !Array.isArray(carrinho) ||
-        carrinho.length === 0
-    ) {
-
-        alert(
-            "🛒 Seu carrinho está vazio."
-        );
-
-        return;
-    }
-
-
-    // =====================================
-    // CALCULAR TOTAL
-    // =====================================
-
-    const total = carrinho.reduce((soma, produto) => {
-        const preco = Number(produto.preco) || 0;
-        const quantidade = Number(produto.quantidade) || 0;
-
-        return soma + preco * quantidade;
-    }, 0);
-
-
-    // =====================================
-    // CRIAR PEDIDO
-    // =====================================
-
-    const pedido = {
-
-        nome: nome,
-
-        telefone: telefone,
-
-        endereco: endereco,
-
-        numero: numero,
-
-        cidade: cidade,
-
-        pagamento: pagamento.value,
-
-        produtos: carrinho,
-
-        total: total,
-
-        data: new Date().toISOString()
-
-    };
-
-
-    // =====================================
-    // SALVAR PEDIDO
-    // =====================================
-
-    localStorage.setItem(
-        "pedidoTemporario",
-        JSON.stringify(pedido)
-    );
-
-
-    // =====================================
-    // IR PARA FINALIZAÇÃO
-    // =====================================
-
-    window.location.href =
-        "finalizacao.html";
-}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Site</title>
+<link rel="stylesheet" href="finalizacao.css">
+</head>
+<body>
+<header class="cabecalho">
+  <h1>Site</h1>
+  <a href="comprar.html">← Voltar</a>
+</header>
+
+<main>
+<section class="card">
+  <h2>Finalizar pedido</h2>
+  <p>Preencha os dados para entrega.</p>
+
+  <form id="pedidoForm">
+    <label>Nome completo<input id="nome" required></label>
+    <label>Telefone<input id="telefone" required></label>
+    <label>Endereço<input id="endereco" required placeholder="Rua, avenida..."></label>
+    <div class="duas-colunas">
+      <label>Número<input id="numero" required></label>
+      <label>Complemento<input id="complemento"></label>
+    </div>
+    <div class="duas-colunas">
+      <label>Bairro<input id="bairro" required></label>
+      <label>Cidade<input id="cidade" required></label>
+    </div>
+    <label>CEP<input id="cep" inputmode="numeric"></label>
+    <label>Observação do pedido<textarea id="observacao" rows="4" placeholder="Ex.: deixar na portaria..."></textarea></label>
+
+    <fieldset>
+      <legend>Forma de pagamento</legend>
+      <label class="radio"><input type="radio" name="pagamento" value="Pix" required> Pix</label>
+      <label class="radio"><input type="radio" name="pagamento" value="Dinheiro"> Dinheiro</label>
+      <label class="radio"><input type="radio" name="pagamento" value="Cartão"> Cartão</label>
+    </fieldset>
+
+    <div id="resumoFinal" class="resumo-final"></div>
+    <button class="botao" type="submit">Confirmar pedido</button>
+  </form>
+</section>
+</main>
+<footer>© 2026 Site</footer>
+<script src="finalizacao.js"></script>
+</body>
+</html>

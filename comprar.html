@@ -1,301 +1,49 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-    <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Comprar - Loja Shalom Embalagens</title>
-
-    <link rel="stylesheet" href="comprar.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Site</title>
+<link rel="stylesheet" href="comprar.css">
 </head>
-
 <body>
-
-    <!-- CABEÇALHO -->
-    <header>
-
-        <div class="logo">
-            📦 Loja Shalom
-            <span>Embalagens</span>
-        </div>
-
-        <a href="index.html" class="voltar">
-            🏠 Voltar para loja
-        </a>
-
-    </header>
-
-
-    <!-- TÍTULO -->
-    <section class="titulo">
-
-        <h1>🛒 Escolha seus produtos</h1>
-
-        <p>
-            Selecione os produtos e informe a quantidade.
-        </p>
-
-    </section>
-
-
-    <!-- PRODUTOS -->
-    <section class="produtos">
-
-
-        <!-- CAIXA DE PAPELÃO -->
-        <div class="produto">
-
-            <img
-                src="caixa de papelao.webp"
-                alt="Caixa de Papelão"
-            >
-
-            <h2>Caixa de Papelão</h2>
-
-            <p>
-                Caixa resistente para diversos produtos.
-            </p>
-
-            <span class="preco">
-                R$ 10,90
-            </span>
-
-            <label class="selecionar-item">
-
-                <input
-                    type="checkbox"
-                    class="produto-selecao"
-                    data-id="qtd-caixa"
-                >
-
-                Selecionar item
-
-            </label>
-
-            <label
-                class="quantidade"
-                for="qtd-caixa"
-            >
-                Quantidade:
-            </label>
-
-            <input
-                type="number"
-                id="qtd-caixa"
-                class="quantidade-input"
-                min="0"
-                value="0"
-            >
-
-        </div>
-
-
-        <!-- SACOLA KRAFT -->
-        <div class="produto">
-
-            <img
-                src="kraft png..webp"
-                alt="Sacola Kraft"
-            >
-
-            <h2>Sacola Kraft</h2>
-
-            <p>
-                Sacola kraft para lojas e presentes.
-            </p>
-
-            <span class="preco">
-                R$ 10,50
-            </span>
-
-            <label class="selecionar-item">
-
-                <input
-                    type="checkbox"
-                    class="produto-selecao"
-                    data-id="qtd-sacola"
-                >
-
-                Selecionar item
-
-            </label>
-
-            <label
-                class="quantidade"
-                for="qtd-sacola"
-            >
-                Quantidade:
-            </label>
-
-            <input
-                type="number"
-                id="qtd-sacola"
-                class="quantidade-input"
-                min="0"
-                value="0"
-            >
-
-        </div>
-
-
-        <!-- EMBALAGEM DELIVERY -->
-        <div class="produto">
-
-            <div class="emoji">
-                🥡
-            </div>
-
-            <h2>Embalagem Delivery</h2>
-
-            <p>
-                Ideal para restaurantes e lanchonetes.
-            </p>
-
-            <span class="preco">
-                R$ 10,00
-            </span>
-
-            <label class="selecionar-item">
-
-                <input
-                    type="checkbox"
-                    class="produto-selecao"
-                    data-id="qtd-delivery"
-                >
-
-                Selecionar item
-
-            </label>
-
-            <label
-                class="quantidade"
-                for="qtd-delivery"
-            >
-                Quantidade:
-            </label>
-
-            <input
-                type="number"
-                id="qtd-delivery"
-                class="quantidade-input"
-                min="0"
-                value="0"
-            >
-
-        </div>
-
-
-        <!-- COPO DESCARTÁVEL -->
-        <div class="produto">
-
-            <img
-                src="copos png..webp"
-                alt="Copo Descartável"
-            >
-
-            <h2>Copo Descartável</h2>
-
-            <p>
-                Copos para festas, eventos e comércio.
-            </p>
-
-            <span class="preco">
-                R$ 10,90
-            </span>
-
-            <label class="selecionar-item">
-
-                <input
-                    type="checkbox"
-                    class="produto-selecao"
-                    data-id="qtd-copo"
-                >
-
-                Selecionar item
-
-            </label>
-
-            <label
-                class="quantidade"
-                for="qtd-copo"
-            >
-                Quantidade:
-            </label>
-
-            <input
-                type="number"
-                id="qtd-copo"
-                class="quantidade-input"
-                min="0"
-                value="0"
-            >
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================
-         RESUMO DA COMPRA
-    ====================================== -->
-
-    <section class="resumo">
-
-        <h2>🛒 Resumo da compra</h2>
-
-        <div id="listaResumo">
-
-            <div class="nenhum">
-                Nenhum produto selecionado.
-            </div>
-
-        </div>
-
-
-        <!-- TOTAL -->
-
-        <div class="total">
-
-            <span>Total:</span>
-
-            <strong>
-                R$ <span id="total">0,00</span>
-            </strong>
-
-        </div>
-
-
-        <!-- BOTÃO -->
-
-        <button
-            type="button"
-            class="botao"
-            onclick="continuarCompra()"
-        >
-            Continuar para pagamento →
-        </button>
-
-    </section>
-
-
-    <!-- =====================================
-         RODAPÉ
-    ====================================== -->
-
-    <footer>
-
-        © 2026 Shalom Embalagens -
-        Todos os direitos reservados.
-
-    </footer>
-
-
-    <!-- JAVASCRIPT -->
-
-    <script src="comprar.js"></script>
-
-</body>
-
+<header class="cabecalho">
+  <h1>Site</h1>
+  <nav><a href="index.html">Início</a><a href="admin.html">Pedidos</a></nav>
+</header><header>
+  <nav>
+
+    
+            <a href="index.html">Início</a>
+            <a href="comprar.html">Comprar</a>
+
+            <!-- NÃO COLOCAR PEDIDOS AQUI -->
+        </nav>
+</header>
+
+<main>
+<section class="titulo">
+  <h2>Produtos</h2>
+  <p>Selecione os produtos e informe a quantidade.</p>
+</section>
+
+<section id="produtos" class="produtos"></section>
+
+<section class="resumo">
+  <h2>Resumo do pedido</h2>
+  <div id="listaResumo"><p class="vazio">Nenhum produto selecionado.</p></div>
+  <div class="total"><span>Total</span><strong>R$ <span id="total">0,00</span></strong></div>
+  <button id="continuar" class="botao" type="button">Continuar</button>
+</section>
+</main>
+<footer>© 2026 Site</footer>
+<script src="comprar.js"></script>
+</body><header class="topo">
+    <div class="container topo-conteudo">
+
+            <!-- NÃO COLOCAR PEDIDOS AQUI -->
+        </nav>
+
+    </div>
+</header><body></body>
 </html>
