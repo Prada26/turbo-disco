@@ -1,565 +1,246 @@
-// ==========================================
-// ADMIN - PEDIDOS DOS CLIENTES
-// SITE
-// ==========================================
+"use strict";
 
-(() => {
+if (localStorage.getItem("tipoUsuario") !== "admin" || localStorage.getItem("usuarioLogado") !== "true") {
+    window.location.replace("login.html");
+    throw new Error("Acesso administrativo negado.");
+}
 
-    "use strict";
+const KEY = {
+    produtos: "produtosShalom",
+    usuarios: "usuariosShalom",
+    depositos: "depositosShalom",
+    pedidos: "pedidosShalom"
+};
 
-    // ==========================================
-    // PROTEÇÃO DO ADMINISTRADOR
-    // ==========================================
+const produtosPadrao = [
+    { id: "caixa", nome: "Caixa de Papelão", preco: 10.90, estoque: 0, observacao: "", imagem: "caixa-de-papelao.webp" },
+    { id: "sacola", nome: "Sacola Kraft", preco: 10.50, estoque: 0, observacao: "", imagem: "" },
+    { id: "delivery", nome: "Embalagem Delivery", preco: 10.00, estoque: 0, observacao: "", imagem: "emblagens.jpg" },
+    { id: "copo", nome: "Copo Descartável", preco: 10.90, estoque: 0, observacao: "", imagem: "copos png..webp" }
+];
 
-    const tipoUsuario = localStorage.getItem("tipoUsuario");
+function lista(chave) {
+    try {
+        const x = JSON.parse(localStorage.getItem(chave) || "[]");
+        return Array.isArray(x) ? x : [];
+    } catch { return []; }
+}
 
-    if (tipoUsuario !== "admin") {
-        window.location.href = "login.html";
+function salvar(chave, valor) {
+    localStorage.setItem(chave, JSON.stringify(valor));
+}
+
+function dinheiro(v) {
+    return Number(v || 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+}
+
+function esc(v) {
+    return String(v ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+}
+
+function iniciarProdutos() {
+    const atual = lista(KEY.produtos);
+    if (!atual.length) salvar(KEY.produtos, produtosPadrao);
+}
+
+function mostrarDepositos() {
+    const area = document.getElementById("listaDepositos");
+    if (!area) return;
+    const dados = lista(KEY.depositos);
+
+    if (!dados.length) {
+        area.innerHTML = '<p class="vazio">Nenhum depósito registrado.</p>';
         return;
     }
 
+    area.innerHTML = dados.slice().reverse().map((d, i) => `
+        <div class="deposito-item">
+            <strong>${dinheiro(d.valor)}</strong>
+            <span>${esc(d.descricao || "Depósito")}</span>
+            <small>${esc(d.data || "")}</small>
+            <button type="button" class="btn-excluir" data-deposito="${dados.length - 1 - i}">🗑️ Excluir</button>
+        </div>
+    `).join("");
 
-    // ==========================================
-    // ELEMENTOS
-    // ==========================================
+    area.querySelectorAll("[data-deposito]").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const dados = lista(KEY.depositos);
+            dados.splice(Number(btn.dataset.deposito), 1);
+            salvar(KEY.depositos, dados);
+            atualizar();
+        });
+    });
+}
 
-    const lista = document.getElementById("listaPedidos");
-    const atualizar = document.getElementById("atualizar");
-    const limpar = document.getElementById("limpar");
+function mostrarProdutos() {
+    const area = document.getElementById("listaProdutos");
+    if (!area) return;
+    const produtos = lista(KEY.produtos);
 
+    area.innerHTML = produtos.length ? produtos.map((p, i) => `
+        <div class="produto-admin">
+            <strong>${esc(p.nome)}</strong>
+            <span>${dinheiro(p.preco)}</span>
+            <span>Estoque: ${Number(p.estoque || 0)}</span>
+            ${p.observacao ? `<small>${esc(p.observacao)}</small>` : ""}
+            <div class="botoes">
+                <button type="button" class="btn-editar" data-editar="${i}">✏️ Editar</button>
+                <button type="button" class="btn-excluir" data-excluir="${i}">🗑️ Excluir</button>
+            </div>
+        </div>
+    `).join("") : '<p class="vazio">Nenhum produto cadastrado.</p>';
 
-    // ==========================================
-    // VERIFICAÇÃO
-    // ==========================================
+    area.querySelectorAll("[data-editar]").forEach(btn => btn.onclick = () => editarProduto(Number(btn.dataset.editar)));
+    area.querySelectorAll("[data-excluir]").forEach(btn => btn.onclick = () => excluirProduto(Number(btn.dataset.excluir)));
+}
 
-    if (!lista) {
-        console.error("Elemento #listaPedidos não encontrado.");
+function mostrarPedidos() {
+    const area = document.getElementById("listaPedidos");
+    if (!area) return;
+    const pedidos = lista(KEY.pedidos);
+
+    if (!pedidos.length) {
+        area.innerHTML = '<p class="vazio">Nenhum pedido registrado.</p>';
         return;
     }
 
+    area.innerHTML = pedidos.slice().reverse().map((p, i) => `
+        <div class="pedido-admin">
+            <strong>Pedido ${pedidos.length - i}</strong>
+            <span>👤 ${esc(p.nome || "Cliente")}</span>
+            <span>💰 ${dinheiro(p.total)}</span>
+            <span>💳 ${esc(p.pagamento || "")}</span>
+            <small>${esc(p.data ? new Date(p.data).toLocaleString("pt-BR") : "")}</small>
+        </div>
+    `).join("");
+}
 
-    // ==========================================
-    // MOEDA
-    // ==========================================
+function mostrarClientes() {
+    const area = document.getElementById("listaClientes");
+    if (!area) return;
+    const clientes = lista(KEY.usuarios);
 
-    function moeda(valor) {
+    area.innerHTML = clientes.length ? clientes.map(u => `
+        <div class="cliente">
+            <strong>👤 ${esc(u.nome || "Cliente")}</strong>
+            <span>📧 ${esc(u.email || "")}</span>
+        </div>
+    `).join("") : '<p class="vazio">Nenhum cliente cadastrado.</p>';
+}
 
-        const numero = Number(valor) || 0;
+function atualizarResumo() {
+    const produtos = lista(KEY.produtos);
+    const clientes = lista(KEY.usuarios);
+    const depositos = lista(KEY.depositos);
+    const saldo = depositos.reduce((s, d) => s + Number(d.valor || 0), 0);
 
-        return numero.toLocaleString("pt-BR", {
-            style: "currency",
-            currency: "BRL"
-        });
+    document.getElementById("saldo")?.replaceChildren(document.createTextNode(dinheiro(saldo)));
+    document.getElementById("totalProdutos")?.replaceChildren(document.createTextNode(produtos.length));
+    document.getElementById("totalClientes")?.replaceChildren(document.createTextNode(clientes.length));
+    document.getElementById("totalDepositos")?.replaceChildren(document.createTextNode(depositos.length));
+}
+
+function mostrarMensagem(texto, ok = false) {
+    const el = document.getElementById("mensagemDeposito");
+    if (!el) return;
+    el.textContent = texto;
+    el.style.color = ok ? "green" : "red";
+}
+
+function registrarDeposito(event) {
+    event.preventDefault();
+    const valor = Number(document.getElementById("valorDeposito")?.value);
+    const descricao = document.getElementById("descricaoDeposito")?.value.trim() || "Depósito";
+
+    if (!Number.isFinite(valor) || valor <= 0) {
+        mostrarMensagem("Digite um valor válido.");
+        return;
     }
 
+    const dados = lista(KEY.depositos);
+    dados.push({ id: Date.now(), valor, descricao, data: new Date().toLocaleString("pt-BR") });
+    salvar(KEY.depositos, dados);
+    event.target.reset();
+    mostrarMensagem("✅ Depósito registrado.", true);
+    atualizar();
+}
 
-    // ==========================================
-    // SEGURANÇA
-    // ==========================================
+function abrirProduto() {
+    document.getElementById("formularioProduto")?.classList.remove("oculto");
+}
 
-    function escapar(valor) {
+function fecharProduto() {
+    document.getElementById("formularioProduto")?.classList.add("oculto");
+    document.getElementById("formularioProduto")?.reset();
+    const id = document.getElementById("produtoId");
+    if (id) id.value = "";
+}
 
-        return String(valor ?? "").replace(/[&<>"']/g, caractere => ({
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': "&quot;",
-            "'": "&#039;"
-        }[caractere]));
+function salvarProduto(event) {
+    event.preventDefault();
+    const id = document.getElementById("produtoId")?.value;
+    const nome = document.getElementById("nomeProduto")?.value.trim();
+    const preco = Number(document.getElementById("precoProduto")?.value);
+    const estoque = Number(document.getElementById("estoqueProduto")?.value);
+    const observacao = document.getElementById("observacaoProduto")?.value.trim() || "";
+    const imagem = document.getElementById("imagemProduto")?.value.trim() || "";
+
+    if (!nome || !Number.isFinite(preco) || preco < 0 || !Number.isFinite(estoque) || estoque < 0) {
+        alert("Preencha corretamente nome, preço e estoque.");
+        return;
     }
 
-
-    // ==========================================
-    // PEGAR PEDIDOS
-    // ==========================================
-
-    function pegarPedidos() {
-
-        try {
-
-            const dados = JSON.parse(
-                localStorage.getItem("pedidosShalom") || "[]"
-            );
-
-            return Array.isArray(dados) ? dados : [];
-
-        } catch (erro) {
-
-            console.error("Erro ao carregar pedidos:", erro);
-
-            return [];
-        }
-    }
-
-
-    // ==========================================
-    // DATA
-    // ==========================================
-
-    function formatarData(data) {
-
-        if (!data) {
-            return "Data não informada";
-        }
-
-        const dataConvertida = new Date(data);
-
-        if (Number.isNaN(dataConvertida.getTime())) {
-            return escapar(data);
-        }
-
-        return dataConvertida.toLocaleString("pt-BR");
-    }
-
-
-    // ==========================================
-    // ENDEREÇO
-    // ==========================================
-
-    function mostrarEndereco(endereco) {
-
-        if (!endereco) {
-            return "<p>Endereço não informado.</p>";
-        }
-
-
-        // Caso o endereço esteja salvo como texto
-        if (typeof endereco === "string") {
-
-            return `
-                <p>
-                    ${escapar(endereco)}
-                </p>
-            `;
-        }
-
-
-        // Caso esteja salvo como objeto
-        const rua = endereco.rua || "";
-        const numero = endereco.numero || "";
-        const complemento = endereco.complemento || "";
-        const bairro = endereco.bairro || "";
-        const cidade = endereco.cidade || "";
-        const cep = endereco.cep || "";
-
-
-        return `
-            ${
-                rua || numero
-                    ? `<p>
-                        ${escapar(rua)}
-                        ${numero ? `, nº ${escapar(numero)}` : ""}
-                    </p>`
-                    : ""
-            }
-
-            ${
-                complemento
-                    ? `<p>
-                        <strong>Complemento:</strong>
-                        ${escapar(complemento)}
-                    </p>`
-                    : ""
-            }
-
-            ${
-                bairro
-                    ? `<p>
-                        <strong>Bairro:</strong>
-                        ${escapar(bairro)}
-                    </p>`
-                    : ""
-            }
-
-            ${
-                cidade
-                    ? `<p>
-                        <strong>Cidade:</strong>
-                        ${escapar(cidade)}
-                    </p>`
-                    : ""
-            }
-
-            ${
-                cep
-                    ? `<p>
-                        <strong>CEP:</strong>
-                        ${escapar(cep)}
-                    </p>`
-                    : ""
-            }
-
-            ${
-                !rua &&
-                !numero &&
-                !complemento &&
-                !bairro &&
-                !cidade &&
-                !cep
-                    ? "<p>Endereço não informado.</p>"
-                    : ""
-            }
-        `;
-    }
-
-
-    // ==========================================
-    // PRODUTOS
-    // ==========================================
-
-    function mostrarProdutos(produtos) {
-
-        if (!Array.isArray(produtos) || produtos.length === 0) {
-
-            return `
-                <p>
-                    Nenhum produto informado.
-                </p>
-            `;
-        }
-
-
-        return produtos.map(item => {
-
-            const quantidade =
-                Number(item.quantidade) || 0;
-
-            const preco =
-                Number(item.preco) || 0;
-
-            const subtotal =
-                Number(item.subtotal) || (preco * quantidade);
-
-
-            return `
-                <div class="produto-linha">
-
-                    <span>
-                        ${escapar(quantidade)}x
-                        ${escapar(item.nome || "Produto")}
-                    </span>
-
-                    <strong>
-                        ${moeda(subtotal)}
-                    </strong>
-
-                </div>
-            `;
-
-        }).join("");
-    }
-
-
-    // ==========================================
-    // CARREGAR PEDIDOS
-    // ==========================================
-
-    function carregarPedidos() {
-
-        let pedidos = pegarPedidos();
-
-
-        // Ordena do mais recente para o mais antigo
-        pedidos.sort((a, b) => {
-
-            const dataA =
-                Number(a.id) || 0;
-
-            const dataB =
-                Number(b.id) || 0;
-
-            return dataB - dataA;
-        });
-
-
-        // Nenhum pedido
-        if (pedidos.length === 0) {
-
-            lista.innerHTML = `
-                <div class="vazio">
-
-                    <h3>📦 Nenhum pedido registrado</h3>
-
-                    <p>
-                        Quando um cliente realizar um pedido,
-                        ele aparecerá aqui.
-                    </p>
-
-                </div>
-            `;
-
-            return;
-        }
-
-
-        // Mostra os pedidos
-        lista.innerHTML = pedidos.map((pedido, index) => {
-
-            const produtos =
-                Array.isArray(pedido.produtos)
-                    ? pedido.produtos
-                    : [];
-
-
-            const total =
-                Number(pedido.total) || 0;
-
-
-            const nome =
-                pedido.nome ||
-                pedido.nomeCliente ||
-                "Cliente";
-
-
-            const email =
-                pedido.email ||
-                pedido.emailCliente ||
-                "";
-
-
-            const telefone =
-                pedido.telefone ||
-                "";
-
-
-            const pagamento =
-                pedido.pagamento ||
-                "Não informado";
-
-
-            const status =
-                pedido.status ||
-                "Pendente";
-
-
-            const observacao =
-                pedido.observacao ||
-                "";
-
-
-            return `
-                <article class="pedido">
-
-
-                    <!-- CABEÇALHO -->
-
-                    <div class="pedido-topo">
-
-                        <div>
-
-                            <h3>
-                                📦 Pedido #${escapar(
-                                    pedido.id || index + 1
-                                )}
-                            </h3>
-
-                            <p>
-                                <strong>
-                                    ${escapar(nome)}
-                                </strong>
-                            </p>
-
-                        </div>
-
-
-                        <span class="status">
-                            ${escapar(status)}
-                        </span>
-
-                    </div>
-
-
-                    <!-- DADOS DO CLIENTE -->
-
-                    <div class="grid">
-
-
-                        <div class="bloco">
-
-                            <h4>
-                                👤 Cliente
-                            </h4>
-
-                            <p>
-                                <strong>Nome:</strong>
-                                ${escapar(nome)}
-                            </p>
-
-
-                            ${
-                                email
-                                    ? `
-                                    <p>
-                                        <strong>E-mail:</strong>
-                                        ${escapar(email)}
-                                    </p>
-                                    `
-                                    : ""
-                            }
-
-
-                            ${
-                                telefone
-                                    ? `
-                                    <p>
-                                        <strong>Telefone:</strong>
-                                        ${escapar(telefone)}
-                                    </p>
-                                    `
-                                    : ""
-                            }
-
-
-                            <p>
-                                <strong>Data:</strong>
-                                ${formatarData(pedido.data)}
-                            </p>
-
-
-                            <p>
-                                <strong>Pagamento:</strong>
-                                ${escapar(pagamento)}
-                            </p>
-
-                        </div>
-
-
-                        <!-- ENDEREÇO -->
-
-                        <div class="bloco">
-
-                            <h4>
-                                📍 Endereço de entrega
-                            </h4>
-
-                            ${mostrarEndereco(
-                                pedido.endereco
-                            )}
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- PRODUTOS -->
-
-                    <div
-                        class="bloco"
-                        style="margin-top:18px"
-                    >
-
-                        <h4>
-                            🛒 Produtos
-                        </h4>
-
-
-                        ${mostrarProdutos(produtos)}
-
-
-                        <div class="total">
-
-                            Total:
-
-                            <strong>
-                                ${moeda(total)}
-                            </strong>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- OBSERVAÇÃO -->
-
-                    ${
-                        observacao
-                            ? `
-                                <div
-                                    class="bloco"
-                                    style="margin-top:18px"
-                                >
-
-                                    <h4>
-                                        📝 Observação
-                                    </h4>
-
-                                    <div class="observacao">
-                                        ${escapar(observacao)}
-                                    </div>
-
-                                </div>
-                            `
-                            : ""
-                    }
-
-
-                </article>
-            `;
-
-        }).join("");
-    }
-
-
-    // ==========================================
-    // BOTÃO ATUALIZAR
-    // ==========================================
-
-    if (atualizar) {
-
-        atualizar.addEventListener(
-            "click",
-            carregarPedidos
-        );
-
-    }
-
-
-    // ==========================================
-    // LIMPAR PEDIDOS
-    // ==========================================
-
-    if (limpar) {
-
-        limpar.addEventListener("click", () => {
-
-            const pedidos = pegarPedidos();
-
-
-            if (pedidos.length === 0) {
-
-                alert("Não existem pedidos para apagar.");
-
-                return;
-            }
-
-
-            const confirmar = confirm(
-                "Tem certeza que deseja apagar TODOS os pedidos deste navegador?"
-            );
-
-
-            if (!confirmar) {
-                return;
-            }
-
-
-            localStorage.removeItem(
-                "pedidosShalom"
-            );
-
-
-            carregarPedidos();
-
-        });
-
-    }
-
-
-    // ==========================================
-    // INICIAR
-    // ==========================================
-
-    carregarPedidos();
-
-
-})();
+    const produtos = lista(KEY.produtos);
+    const produto = id ? produtos.find(p => String(p.id) === String(id)) : null;
+
+    if (produto) Object.assign(produto, { nome, preco, estoque, observacao, imagem });
+    else produtos.push({ id: Date.now().toString(), nome, preco, estoque, observacao, imagem });
+
+    salvar(KEY.produtos, produtos);
+    fecharProduto();
+    atualizar();
+}
+
+function editarProduto(i) {
+    const p = lista(KEY.produtos)[i];
+    if (!p) return;
+    document.getElementById("produtoId").value = p.id;
+    document.getElementById("nomeProduto").value = p.nome || "";
+    document.getElementById("precoProduto").value = p.preco ?? "";
+    document.getElementById("estoqueProduto").value = p.estoque ?? "";
+    document.getElementById("observacaoProduto").value = p.observacao || "";
+    document.getElementById("imagemProduto").value = p.imagem || "";
+    abrirProduto();
+}
+
+function excluirProduto(i) {
+    const produtos = lista(KEY.produtos);
+    if (!produtos[i] || !confirm("Excluir este produto?")) return;
+    produtos.splice(i, 1);
+    salvar(KEY.produtos, produtos);
+    atualizar();
+}
+
+function sair() {
+    ["tipoUsuario","usuarioLogado","usuarioNome","nomeUsuario","clienteNome","clienteEmail","usuarioAtual"]
+        .forEach(k => localStorage.removeItem(k));
+    window.location.replace("login.html");
+}
+
+function atualizar() {
+    mostrarDepositos();
+    mostrarProdutos();
+    mostrarPedidos();
+    mostrarClientes();
+    atualizarResumo();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    iniciarProdutos();
+    document.getElementById("depositoForm")?.addEventListener("submit", registrarDeposito);
+    document.getElementById("formularioProduto")?.addEventListener("submit", salvarProduto);
+    document.getElementById("btnNovoProduto")?.addEventListener("click", abrirProduto);
+    document.getElementById("btnCancelarProduto")?.addEventListener("click", fecharProduto);
+    document.getElementById("btnSair")?.addEventListener("click", sair);
+    atualizar();
+});

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Pagamento - Loja Shalom
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="pagamento.css"
+    >
+
+</head>
+
+
+<body>
+
+    <!-- ======================================
+         PÁGINA DE PAGAMENTO
+    ======================================= -->
+
+    <main class="pagina">
+
+        <section class="card">
+
+            <h1>
+                🧾 Finalizar pedido
+            </h1>
+
+
+            <p>
+                Confira os itens e informe
+                os dados para entrega.
+            </p>
+
+
+            <!-- ==================================
+                 RESUMO DO PEDIDO
+            =================================== -->
+
+            <div
+                id="resumoPedido"
+                class="resumo-pedido"
+            >
+            </div>
+
+
+            <!-- ==================================
+                 FORMULÁRIO
+            =================================== -->
+
+            <form
+                id="pagamentoForm"
+            >
+
+                <!-- NOME -->
+
+                <label for="nome">
+                    Nome
+                </label>
+
+                <input
+                    type="text"
+                    id="nome"
+                    name="nome"
+                    autocomplete="name"
+                    placeholder="Digite seu nome"
+                    required
+                >
+
+
+                <!-- TELEFONE -->
+
+                <label for="telefone">
+                    Telefone
+                </label>
+
+                <input
+                    type="tel"
+                    id="telefone"
+                    name="telefone"
+                    autocomplete="tel"
+                    placeholder="(00) 00000-0000"
+                    required
+                >
+
+
+                <!-- ENDEREÇO -->
+
+                <label for="endereco">
+                    Endereço
+                </label>
+
+                <input
+                    type="text"
+                    id="endereco"
+                    name="endereco"
+                    autocomplete="street-address"
+                    placeholder="Rua / Avenida"
+                    required
+                >
+
+
+                <!-- NÚMERO -->
+
+                <label for="numero">
+                    Número
+                </label>
+
+                <input
+                    type="text"
+                    id="numero"
+                    name="numero"
+                    placeholder="Número"
+                    required
+                >
+
+
+                <!-- CIDADE -->
+
+                <label for="cidade">
+                    Cidade
+                </label>
+
+                <input
+                    type="text"
+                    id="cidade"
+                    name="cidade"
+                    autocomplete="address-level2"
+                    placeholder="Cidade"
+                    required
+                >
+
+
+                <!-- ==================================
+                     FORMA DE PAGAMENTO
+                =================================== -->
+
+                <fieldset>
+
+                    <legend>
+                        Forma de pagamento
+                    </legend>
+
+
+                    <label>
+                        <input
+                            type="radio"
+                            name="pagamento"
+                            value="Pix"
+                            required
+                        >
+
+                        Pix
+                    </label>
+
+
+                    <label>
+                        <input
+                            type="radio"
+                            name="pagamento"
+                            value="Dinheiro"
+                        >
+
+                        Dinheiro
+                    </label>
+
+
+                    <label>
+                        <input
+                            type="radio"
+                            name="pagamento"
+                            value="Cartão"
+                        >
+
+                        Cartão
+                    </label>
+
+                </fieldset>
+
+
+                <!-- ==================================
+                     BOTÃO
+                =================================== -->
+
+                <button
+                    type="submit"
+                >
+                    ✅ Confirmar pedido
+                </button>
+
+            </form>
+
+
+            <!-- ==================================
+                 VOLTAR
+            =================================== -->
+
+            <a
+                href="comprar.html"
+            >
+                ← Voltar para produtos
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <!-- ======================================
+         JAVASCRIPT
+    ======================================= -->
+
+    <script
+        src="pagamento.js"
+    ></script>
+
+</body>
+
+</html>

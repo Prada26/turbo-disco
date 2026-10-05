@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Cadastro - Loja Shalom</title>
+
+    <link
+        rel="stylesheet"
+        href="cadastro.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- ==========================================
+         CADASTRO
+    =========================================== -->
+
+    <main class="cadastro-container">
+
+        <section class="cadastro-card">
+
+
+            <!-- LOGO -->
+
+            <div class="logo">
+                📦
+            </div>
+
+
+            <!-- TÍTULO -->
+
+            <h1>
+                Criar conta
+            </h1>
+
+
+            <!-- FORMULÁRIO -->
+
+            <form id="cadastroForm">
+
+
+                <!-- NOME -->
+
+                <label for="nome">
+                    Nome
+                </label>
+
+                <input
+                    type="text"
+                    id="nome"
+                    placeholder="Seu nome"
+                    autocomplete="name"
+                    required
+                >
+
+
+                <!-- E-MAIL -->
+
+                <label for="email">
+                    E-mail
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Seu e-mail"
+                    autocomplete="email"
+                    required
+                >
+
+
+                <!-- SENHA -->
+
+                <label for="senha">
+                    Senha
+                </label>
+
+                <input
+                    type="password"
+                    id="senha"
+                    placeholder="Mínimo de 6 caracteres"
+                    minlength="6"
+                    autocomplete="new-password"
+                    required
+                >
+
+
+                <!-- CONFIRMAR SENHA -->
+
+                <label for="confirmarSenha">
+                    Confirmar senha
+                </label>
+
+                <input
+                    type="password"
+                    id="confirmarSenha"
+                    placeholder="Digite a senha novamente"
+                    minlength="6"
+                    autocomplete="new-password"
+                    required
+                >
+
+
+                <!-- MENSAGEM -->
+
+                <div
+                    id="mensagem"
+                    aria-live="polite"
+                ></div>
+
+
+                <!-- BOTÃO -->
+
+                <button
+                    type="submit"
+                >
+                    👤 Criar conta
+                </button>
+
+
+            </form>
+
+
+            <!-- LOGIN -->
+
+            <p class="login-link">
+
+                Já possui conta?
+
+                <a href="login.html">
+                    Entrar
+                </a>
+
+            </p>
+
+
+        </section>
+
+    </main>
+
+
+    <!-- ==========================================
+         JAVASCRIPT
+    =========================================== -->
+
+    <script src="cadastro.js"></script>
+
+    <script src="relogio.js"></script>
+
+
+</body>
+
+</html>

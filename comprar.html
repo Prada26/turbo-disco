@@ -1,49 +1,225 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Site</title>
-<link rel="stylesheet" href="comprar.css">
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Comprar - Loja Shalom</title>
+
+
+    <!-- ==========================================
+         CSS DA LOJA
+    =========================================== -->
+
+    <link
+        rel="stylesheet"
+        href="comprar.css"
+    >
+
+
+    <!-- ==========================================
+         CSS DO CHATBOT
+    =========================================== -->
+
+
 </head>
+
+
 <body>
-<header class="cabecalho">
-  <h1>Site</h1>
-  <nav><a href="index.html">Início</a><a href="admin.html">Pedidos</a></nav>
-</header><header>
-  <nav>
 
-    
-            <a href="index.html">Início</a>
-            <a href="comprar.html">Comprar</a>
 
-            <!-- NÃO COLOCAR PEDIDOS AQUI -->
-        </nav>
-</header>
+    <!-- ==========================================
+         CABEÇALHO
+    =========================================== -->
 
-<main>
-<section class="titulo">
-  <h2>Produtos</h2>
-  <p>Selecione os produtos e informe a quantidade.</p>
-</section>
+    <header class="cabecalho">
 
-<section id="produtos" class="produtos"></section>
 
-<section class="resumo">
-  <h2>Resumo do pedido</h2>
-  <div id="listaResumo"><p class="vazio">Nenhum produto selecionado.</p></div>
-  <div class="total"><span>Total</span><strong>R$ <span id="total">0,00</span></strong></div>
-  <button id="continuar" class="botao" type="button">Continuar</button>
-</section>
-</main>
-<footer>© 2026 Site</footer>
-<script src="comprar.js"></script>
-</body><header class="topo">
-    <div class="container topo-conteudo">
+        <!-- ======================================
+             LOGO
+        ======================================= -->
 
-            <!-- NÃO COLOCAR PEDIDOS AQUI -->
-        </nav>
+        <div class="logo-area">
 
-    </div>
-</header><body></body>
+            <h1>
+                📦 Loja Shalom
+            </h1>
+
+            <strong>
+                Embalagens
+            </strong>
+
+        </div>
+
+
+        <!-- ======================================
+             RELÓGIO
+        ======================================= -->
+
+        <div class="relogio-loja">
+
+            <div
+                id="relogioBrasil"
+                class="hora-loja"
+            >
+                00:00:00
+            </div>
+
+            <div
+                id="dataBrasil"
+                class="data-loja"
+            >
+                Carregando...
+            </div>
+
+        </div>
+
+
+        <!-- ======================================
+             CLIENTE
+        ======================================= -->
+
+        <div class="usuario-area">
+
+            <span id="nomeCliente">
+                Cliente
+            </span>
+
+            <button
+                id="btnSair"
+                type="button"
+            >
+                Sair
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ==========================================
+         CONTEÚDO PRINCIPAL
+    =========================================== -->
+
+    <main>
+
+
+        <!-- ======================================
+             TÍTULO
+        ======================================= -->
+
+        <section class="titulo">
+
+            <h1>
+                🛒 Escolha seus produtos
+            </h1>
+
+            <p>
+                Selecione os produtos e informe a quantidade.
+            </p>
+
+        </section>
+
+
+
+        <!-- ======================================
+             LISTA DE PRODUTOS
+        ======================================= -->
+
+        <section
+            id="listaProdutos"
+            class="produtos"
+        >
+
+            <!--
+                Os produtos serão carregados
+                automaticamente pelo comprar.js
+            -->
+
+        </section>
+
+
+
+        <!-- ======================================
+             RESUMO DA COMPRA
+        ======================================= -->
+
+        <section class="resumo">
+
+
+            <h2>
+                🧾 Resumo da compra
+            </h2>
+
+
+            <!-- ==================================
+                 LISTA DOS PRODUTOS SELECIONADOS
+            =================================== -->
+
+            <div id="listaResumo">
+
+                <div class="nenhum">
+                    Nenhum produto selecionado.
+                </div>
+
+            </div>
+
+
+
+            <!-- ==================================
+                 TOTAL
+            =================================== -->
+
+            <div class="total">
+
+                <span>
+                    Total:
+                </span>
+
+                <strong id="total">
+                    R$ 0,00
+                </strong>
+
+            </div>
+
+
+
+            <!-- ==================================
+                 CONTINUAR
+            =================================== -->
+
+            <button
+                id="btnContinuar"
+                class="botao"
+                type="button"
+                disabled
+            >
+                Continuar para pagamento →
+            </button>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- ==========================================
+         CHATBOT - LOJA SHALOM
+    =========================================== -->
+
+
+    <script src="comprar.js"></script>
+    <script src="chatbot.js"></script>
+    <script src="relogio.js"></script>
+
+</body>
 </html>
