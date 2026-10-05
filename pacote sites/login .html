@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>Entrar</title>
+
+<link rel="stylesheet" href="login.css">
+```
+
+</head>
+
+<body>
+
+```
+<main class="login-container">
+
+    <section class="login-card">
+
+        <div class="login-topo">
+            <div class="login-icone">👤</div>
+
+            <h1>Entrar</h1>
+
+            <p>
+                Acesse sua conta para continuar
+            </p>
+        </div>
+
+        <form id="loginForm">
+
+            <div class="campo">
+                <label for="email">E-mail</label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Digite seu e-mail"
+                    autocomplete="email"
+                    required
+                >
+            </div>
+
+            <div class="campo">
+                <label for="senha">Senha</label>
+
+                <input
+                    type="password"
+                    id="senha"
+                    placeholder="Digite sua senha"
+                    autocomplete="current-password"
+                    required
+                >
+            </div>
+
+            <button type="submit" class="btn-login">
+                Entrar
+            </button>
+
+            <p id="mensagem" class="mensagem"></p>
+
+        </form>
+
+        <div class="separador">
+            <span>ou</span>
+        </div>
+
+        <a href="cadastro.html" class="btn-cadastro">
+            Criar uma conta
+        </a>
+
+        <a href="index.html" class="voltar">
+            ← Voltar para o site
+        </a>
+
+    </section>
+
+</main>
+
+<script src="login.js"></script>
+```
+
+</body>
+</html>

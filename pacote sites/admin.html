@@ -1,0 +1,159 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Painel Administrativo</title>
+
+    <link rel="stylesheet" href="admin.css">
+
+</head>
+
+
+<body>
+
+
+<header class="admin-header">
+
+    <div>
+
+        <h1>Painel Administrativo</h1>
+
+        <p id="usuarioAdmin"></p>
+
+    </div>
+
+    <button id="btnSair">
+        Sair
+    </button>
+
+</header>
+
+
+<main class="admin-container">
+
+
+<section class="resumo">
+
+    <div class="resumo-card">
+
+        <span>Pedidos</span>
+
+        <strong id="totalPedidos">
+            0
+        </strong>
+
+    </div>
+
+
+    <div class="resumo-card">
+
+        <span>Clientes</span>
+
+        <strong id="totalClientes">
+            0
+        </strong>
+
+    </div>
+
+
+    <div class="resumo-card">
+
+        <span>Faturamento estimado</span>
+
+        <strong id="faturamento">
+            R$ 0,00
+        </strong>
+
+    </div>
+
+</section>
+
+
+<section class="admin-card">
+
+    <div class="card-header">
+
+        <h2>Pedidos recebidos</h2>
+
+        <button id="atualizarPedidos">
+            Atualizar
+        </button>
+
+    </div>
+
+
+    <div id="listaPedidos">
+
+        <p class="vazio">
+            Nenhum pedido registrado.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="admin-card">
+
+    <h2>Cadastrar cliente</h2>
+
+
+    <form id="formCliente">
+
+        <input
+            type="text"
+            id="nomeCliente"
+            placeholder="Nome"
+            required
+        >
+
+        <input
+            type="email"
+            id="emailCliente"
+            placeholder="E-mail"
+            required
+        >
+
+        <input
+            type="password"
+            id="senhaCliente"
+            placeholder="Senha"
+            required
+        >
+
+        <button type="submit">
+            Cadastrar cliente
+        </button>
+
+    </form>
+
+</section>
+
+
+<section class="admin-card">
+
+    <h2>Clientes cadastrados</h2>
+
+    <div id="listaClientes"></div>
+
+</section>
+
+
+</main>
+
+
+<script src="admin.js"></script>
+
+</body>
+
+</html>
+```
